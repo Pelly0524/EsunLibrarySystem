@@ -4,7 +4,7 @@
     {
         bool CreateUser(string phone, string hashedPassword, string salt, string userName);
         AuthInfo GetAuthInfo(string phone);
-        void UpdateLastLoginTime(int userId);
+        bool UpdateLastLoginTime(int userId);
     }
 
     public class AuthInfo

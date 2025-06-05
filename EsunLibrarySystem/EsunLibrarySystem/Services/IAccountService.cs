@@ -6,7 +6,7 @@ namespace EsunLibrarySystem.Services
     {
         bool Register(RegisterViewModel model);
         LoginResult ValidateLogin(string phone, string password);
-        void UpdateLastLogin(int userId);
+        bool UpdateLastLogin(int userId);
     }
 
     public class LoginResult

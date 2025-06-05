@@ -13,16 +13,23 @@ namespace EsunLibrarySystem.Repositories
 
         public bool CreateUser(string phone, string hashedPassword, string salt, string userName)
         {
-            using var conn = new MySqlConnection(_connectionString);
-            using var cmd = new MySqlCommand("CALL sp_RegisterUser(@phone, @pass, @salt, @name);", conn);
-            cmd.Parameters.AddWithValue("@phone", phone);
-            cmd.Parameters.AddWithValue("@pass", hashedPassword);
-            cmd.Parameters.AddWithValue("@salt", salt);
-            cmd.Parameters.AddWithValue("@name", userName);
+            try
+            {
+                using var conn = new MySqlConnection(_connectionString);
+                using var cmd = new MySqlCommand("CALL sp_RegisterUser(@phone, @pass, @salt, @name);", conn);
+                cmd.Parameters.AddWithValue("@phone", phone);
+                cmd.Parameters.AddWithValue("@pass", hashedPassword);
+                cmd.Parameters.AddWithValue("@salt", salt);
+                cmd.Parameters.AddWithValue("@name", userName);
 
-            conn.Open();
-            var result = cmd.ExecuteNonQuery();
-            return result > 0;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (MySqlException)
+            {
+                return false;
+            }
         }
 
         public AuthInfo GetAuthInfo(string phone)
@@ -46,14 +53,23 @@ namespace EsunLibrarySystem.Repositories
             return null;
         }
 
-        public void UpdateLastLoginTime(int userId)
+        public bool UpdateLastLoginTime(int userId)
         {
-            using var conn = new MySqlConnection(_connectionString);
-            using var cmd = new MySqlCommand("CALL sp_UpdateLastLoginTime(@userId);", conn);
-            cmd.Parameters.AddWithValue("@userId", userId);
-            conn.Open();
-            cmd.ExecuteNonQuery();
+            try
+            {
+                using var conn = new MySqlConnection(_connectionString);
+                using var cmd = new MySqlCommand("CALL sp_UpdateLastLoginTime(@userId);", conn);
+                cmd.Parameters.AddWithValue("@userId", userId);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (MySqlException)
+            {
+                return false;
+            }
         }
+
 
     }
 }

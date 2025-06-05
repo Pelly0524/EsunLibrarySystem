@@ -32,9 +32,9 @@ namespace EsunLibrarySystem.Services
             return new LoginResult { UserId = authInfo.UserId, UserName = authInfo.UserName };
         }
 
-        public void UpdateLastLogin(int userId)
+        public bool UpdateLastLogin(int userId)
         {
-            _repository.UpdateLastLoginTime(userId);
+            return _repository.UpdateLastLoginTime(userId);
         }
 
         private string GenerateSalt(int length = 16)

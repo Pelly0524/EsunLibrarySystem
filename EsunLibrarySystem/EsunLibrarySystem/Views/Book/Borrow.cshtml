@@ -1,0 +1,47 @@
+﻿@model List<EsunLibrarySystem.Models.BookViewModel>
+
+@{
+    ViewData["Title"] = "可借書清單";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>庫存ID</th>
+            <th>書名</th>
+            <th>作者</th>
+            <th>ISBN</th>
+            <th>狀態</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.InventoryId</td>
+                <td>@book.BookName</td>
+                <td>@book.Author</td>
+                <td>@book.ISBN</td>
+                <td>@book.Status</td>
+                <td>
+                    <form asp-action="Borrow" asp-controller="Book" method="post">
+                        <input type="hidden" name="inventoryId" value="@book.InventoryId" />
+                        <button type="submit" class="btn btn-sm btn-success">借出</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (TempData["BorrowSuccess"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["BorrowSuccess"]</div>
+}
+@if (TempData["BorrowError"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["BorrowError"]</div>
+}
